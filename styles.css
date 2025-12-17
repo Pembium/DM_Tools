@@ -1,0 +1,363 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 2px solid #333;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    color: #f0f0f0;
+    font-size: 2rem;
+}
+
+.save-load-controls {
+    display: flex;
+    gap: 10px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.1s;
+    background-color: #444;
+    color: #e0e0e0;
+}
+
+.btn:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background-color: #5a67d8;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #4c51bf;
+}
+
+.btn-save {
+    background-color: #48bb78;
+    color: white;
+}
+
+.btn-save:hover {
+    background-color: #38a169;
+}
+
+.btn-load {
+    background-color: #4299e1;
+    color: white;
+}
+
+.btn-load:hover {
+    background-color: #3182ce;
+}
+
+/* Tabs Navigation */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+}
+
+.tab-button {
+    padding: 15px 30px;
+    background-color: #2a2a2a;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: #999;
+    transition: all 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+.tab-button.active {
+    background-color: #333;
+    color: #fff;
+    border-bottom-color: #5a67d8;
+}
+
+/* Tab Content */
+.content {
+    min-height: 500px;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.tab-content h2 {
+    margin-bottom: 20px;
+    color: #f0f0f0;
+}
+
+/* World Map Tab */
+.world-map-container {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.map-canvas {
+    background-color: #1a1a1a;
+    border: 2px solid #444;
+    border-radius: 5px;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.map-controls {
+    display: flex;
+    gap: 10px;
+}
+
+/* NPC Cards Tab */
+.npc-controls {
+    margin-bottom: 20px;
+}
+
+.npc-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.npc-card {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.npc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.npc-card h3 {
+    margin-bottom: 10px;
+    color: #5a67d8;
+}
+
+.npc-card p {
+    margin-bottom: 8px;
+    color: #ccc;
+}
+
+.npc-card .card-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.npc-card .btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.npc-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.npc-input:focus {
+    outline: none;
+    border-color: #5a67d8;
+}
+
+.npc-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.npc-textarea:focus {
+    outline: none;
+    border-color: #5a67d8;
+}
+
+.npc-select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.npc-select:focus {
+    outline: none;
+    border-color: #5a67d8;
+}
+
+.status-selector {
+    margin-bottom: 10px;
+}
+
+.status-selector label {
+    display: block;
+    margin-bottom: 5px;
+    color: #e0e0e0;
+}
+
+.npc-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.npc-status-badge.alive {
+    background-color: #48bb78;
+    color: white;
+}
+
+.npc-status-badge.dead {
+    background-color: #f56565;
+    color: white;
+}
+
+.npc-card.npc-dead {
+    opacity: 0.7;
+    border-left: 3px solid #f56565;
+}
+
+/* Notes Tab */
+.notes-container {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.notes-controls {
+    margin-bottom: 20px;
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.note-item {
+    background-color: #1a1a1a;
+    border-left: 4px solid #5a67d8;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.note-item h3 {
+    margin-bottom: 10px;
+    color: #f0f0f0;
+}
+
+.note-item .note-content {
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.note-item .note-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.note-item .btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .tab-button {
+        width: 100%;
+    }
+
+    .npc-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}

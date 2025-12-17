@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM Tools</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DM Tools</h1>
+            <div class="save-load-controls">
+                <button id="saveBtn" class="btn btn-save">Save Session</button>
+                <button id="loadBtn" class="btn btn-load">Load Session</button>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="world-map">World Map</button>
+            <button class="tab-button" data-tab="npc-cards">NPC Cards</button>
+            <button class="tab-button" data-tab="notes">Notes</button>
+        </nav>
+
+        <main class="content">
+            <!-- World Map Tab -->
+            <div id="world-map" class="tab-content active">
+                <h2>World Map</h2>
+                <div class="world-map-container">
+                    <div class="map-canvas" id="mapCanvas">
+                        <p id="mapPlaceholder">Upload a map image to get started</p>
+                        <img id="mapImage" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain;" alt="World Map">
+                    </div>
+                    <div class="map-controls">
+                        <input type="file" id="mapUpload" accept="image/*" style="display: none;">
+                        <button class="btn btn-primary" onclick="document.getElementById('mapUpload').click()">Upload Map</button>
+                        <button class="btn" onclick="addMapLocation()">Add Location</button>
+                        <button class="btn" onclick="clearMap()">Clear Map</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NPC Cards Tab -->
+            <div id="npc-cards" class="tab-content">
+                <h2>NPC Character Cards</h2>
+                <div class="npc-controls">
+                    <button id="addNpcBtn" class="btn btn-primary">Add New NPC</button>
+                </div>
+                <div id="npcCardsContainer" class="npc-cards-grid">
+                    <!-- NPC cards will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Notes Tab -->
+            <div id="notes" class="tab-content">
+                <h2>Notes</h2>
+                <div class="notes-container">
+                    <div class="notes-controls">
+                        <button id="addNoteBtn" class="btn btn-primary">Add New Note</button>
+                    </div>
+                    <div id="notesContainer" class="notes-list">
+                        <!-- Notes will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Core application script -->
+    <script src="script.js"></script>
+    <!-- Module scripts for each tab -->
+    <script src="world-map.js"></script>
+    <script src="npc-cards.js"></script>
+    <script src="notes.js"></script>
+</body>
+</html>
