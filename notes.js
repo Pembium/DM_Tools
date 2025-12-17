@@ -11,7 +11,8 @@ function initializeNotes() {
         addNoteBtn.addEventListener('click', showNoteForm);
     }
     if (saveNoteBtn) {
-        saveNoteBtn.addEventListener('click', saveNewNote);
+        // Unified save handler (creates or edits based on state)
+        saveNoteBtn.addEventListener('click', saveNote);
     }
     if (cancelNoteBtn) {
         cancelNoteBtn.addEventListener('click', hideNoteForm);
@@ -38,14 +39,29 @@ function hideNoteForm() {
     const titleInput = document.getElementById('noteTitle');
     const dateInput = document.getElementById('noteDate');
     const contentInput = document.getElementById('noteContent');
+    const saveNoteBtn = document.getElementById('saveNoteBtn');
     
     // Clear form
     titleInput.value = '';
     dateInput.value = '';
     contentInput.value = '';
+    editingNoteId = null;
+    if (saveNoteBtn) saveNoteBtn.textContent = 'Save Note';
     
     formContainer.style.display = 'none';
     addNoteBtn.style.display = 'block';
+}
+
+// Edit state
+let editingNoteId = null;
+
+// Unified save handler
+function saveNote() {
+    if (editingNoteId !== null) {
+        saveEditedNote();
+    } else {
+        saveNewNote();
+    }
 }
 
 // Save new note
@@ -73,6 +89,52 @@ function saveNewNote() {
     showNotification('Note saved!', 'success');
 }
 
+// Begin editing an existing note
+function beginEditNote(id) {
+    const note = appState.notes.find(n => n.id === id);
+    if (!note) return;
+
+    editingNoteId = id;
+
+    // Show form then populate fields
+    showNoteForm();
+    const titleInput = document.getElementById('noteTitle');
+    const dateInput = document.getElementById('noteDate');
+    const contentInput = document.getElementById('noteContent');
+    const saveNoteBtn = document.getElementById('saveNoteBtn');
+
+    titleInput.value = note.title || '';
+    dateInput.value = note.sessionDate || '';
+    contentInput.value = note.content || '';
+    if (saveNoteBtn) saveNoteBtn.textContent = 'Save Changes';
+}
+
+// Save edits to an existing note
+function saveEditedNote() {
+    const titleInput = document.getElementById('noteTitle');
+    const dateInput = document.getElementById('noteDate');
+    const contentInput = document.getElementById('noteContent');
+
+    const title = titleInput.value.trim() || 'Untitled Note';
+    const sessionDate = dateInput.value;
+    const content = contentInput.value.trim();
+
+    const idx = appState.notes.findIndex(n => n.id === editingNoteId);
+    if (idx === -1) return;
+
+    appState.notes[idx] = {
+        ...appState.notes[idx],
+        title,
+        sessionDate,
+        content,
+        timestamp: `Edited: ${new Date().toLocaleString()}`
+    };
+
+    renderNotes();
+    hideNoteForm();
+    showNotification('Note updated!', 'success');
+}
+
 // Render all notes
 function renderNotes() {
     const container = document.getElementById('notesContainer');
@@ -92,6 +154,7 @@ function renderNotes() {
             <div class="note-content">${escapeHtml(note.content || '')}</div>
             <small style="color: #666;">${escapeHtml(note.timestamp)}</small>
             <div class="note-actions">
+                <button class="btn btn-small" onclick="beginEditNote(${note.id})">Edit</button>
                 <button class="btn btn-small" onclick="deleteNote(${note.id})">Delete</button>
             </div>
         `;
@@ -123,6 +186,9 @@ if (typeof module !== 'undefined' && module.exports) {
         showNoteForm,
         hideNoteForm,
         saveNewNote,
+        saveNote,
+        beginEditNote,
+        saveEditedNote,
         renderNotes,
         deleteNote
     };

@@ -88,6 +88,10 @@ function loadSession() {
             Object.assign(appState, loadedState);
             
             // Refresh UI with loaded data
+            if (appState.mapData && appState.mapData.imageUrl) {
+                // Display saved map image
+                displayMap(appState.mapData.imageUrl);
+            }
             renderNPCs();
             renderNotes();
             renderMapLocations();
@@ -118,6 +122,10 @@ function loadFromLocalStorage() {
                 renderNotes();
             }
             if (document.getElementById('mapImage')) {
+                if (appState.mapData && appState.mapData.imageUrl) {
+                    // Display saved map image
+                    displayMap(appState.mapData.imageUrl);
+                }
                 renderMapLocations();
             }
         } catch (error) {
