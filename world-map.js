@@ -3,6 +3,7 @@
 
 // State for tracking marker placement mode
 let isPlacingMarker = false;
+let selectedMarkerId = null;
 
 // Initialize world map functionality
 function initializeWorldMap() {
@@ -124,6 +125,27 @@ function displayMap(imageUrl) {
     };
 }
 
+// Delete a specific marker by ID
+function deleteMarker(id) {
+    const marker = appState.mapData.locations.find(m => m.id === id);
+    if (marker && confirm(`Delete marker "${marker.name}"?`)) {
+        appState.mapData.locations = appState.mapData.locations.filter(m => m.id !== id);
+        selectedMarkerId = null;
+        renderMapLocations();
+        showNotification(`Marker "${marker.name}" deleted`, 'success');
+    }
+}
+
+// Toggle marker selection for deletion
+function toggleMarkerSelection(id) {
+    if (selectedMarkerId === id) {
+        selectedMarkerId = null;
+    } else {
+        selectedMarkerId = id;
+    }
+    renderMapLocations();
+}
+
 // Clear map markers only (keep image)
 function clearMapMarkers() {
     if (appState.mapData.locations && appState.mapData.locations.length > 0) {
@@ -241,16 +263,28 @@ function renderMapLocations() {
             return; // skip malformed marker
         }
 
-        // Draw marker circle
+        const isSelected = selectedMarkerId === location.id;
+        const markerStroke = isSelected ? '#ffff00' : 'white';
+        const markerStrokeWidth = isSelected ? '3' : '2';
+
+        // Draw marker circle (clickable group)
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.style.cursor = 'pointer';
+        g.style.pointerEvents = 'auto';
+        g.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMarkerSelection(location.id);
+        });
+
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('cx', sx);
         circle.setAttribute('cy', sy);
         circle.setAttribute('r', markerRadius);
         circle.setAttribute('fill', color);
-        circle.setAttribute('stroke', 'white');
-        circle.setAttribute('stroke-width', '2');
+        circle.setAttribute('stroke', markerStroke);
+        circle.setAttribute('stroke-width', markerStrokeWidth);
         circle.setAttribute('opacity', '0.9');
-        svg.appendChild(circle);
+        g.appendChild(circle);
 
         // Draw marker label background
         const labelBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -260,7 +294,7 @@ function renderMapLocations() {
         labelBg.setAttribute('height', '20');
         labelBg.setAttribute('fill', 'rgba(0, 0, 0, 0.8)');
         labelBg.setAttribute('rx', '3');
-        svg.appendChild(labelBg);
+        g.appendChild(labelBg);
 
         // Draw marker label text
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -271,7 +305,47 @@ function renderMapLocations() {
         text.setAttribute('font-weight', 'bold');
         text.setAttribute('font-family', 'Arial, sans-serif');
         text.textContent = location.name;
-        svg.appendChild(text);
+        g.appendChild(text);
+
+        // Draw delete button if selected
+        if (isSelected) {
+            const deleteBtn = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            deleteBtn.setAttribute('cx', sx);
+            deleteBtn.setAttribute('cy', sy - 20);
+            deleteBtn.setAttribute('r', 6);
+            deleteBtn.setAttribute('fill', '#f56565');
+            deleteBtn.setAttribute('stroke', 'white');
+            deleteBtn.setAttribute('stroke-width', '1');
+            deleteBtn.style.cursor = 'pointer';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteMarker(location.id);
+            });
+            g.appendChild(deleteBtn);
+
+            // Draw X on delete button
+            const xLine1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            xLine1.setAttribute('x1', sx - 2);
+            xLine1.setAttribute('y1', sy - 22);
+            xLine1.setAttribute('x2', sx + 2);
+            xLine1.setAttribute('y2', sy - 18);
+            xLine1.setAttribute('stroke', 'white');
+            xLine1.setAttribute('stroke-width', '1.5');
+            xLine1.style.pointerEvents = 'none';
+            g.appendChild(xLine1);
+
+            const xLine2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            xLine2.setAttribute('x1', sx + 2);
+            xLine2.setAttribute('y1', sy - 22);
+            xLine2.setAttribute('x2', sx - 2);
+            xLine2.setAttribute('y2', sy - 18);
+            xLine2.setAttribute('stroke', 'white');
+            xLine2.setAttribute('stroke-width', '1.5');
+            xLine2.style.pointerEvents = 'none';
+            g.appendChild(xLine2);
+        }
+
+        svg.appendChild(g);
     });
 
     mapCanvas.appendChild(svg);
