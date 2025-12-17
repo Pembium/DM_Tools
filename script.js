@@ -11,22 +11,32 @@ const appState = {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded - starting initialization');
     initializeTabs();
+    console.log('After initializeTabs');
     initializeSaveLoad();
+    console.log('After initializeSaveLoad');
     initializeWorldMap();
+    console.log('After initializeWorldMap');
     initializeNPCCards();
+    console.log('After initializeNPCCards');
     initializeNotes();
+    console.log('After initializeNotes');
     loadFromLocalStorage();
+    console.log('Initialization complete');
 });
 
 // Tab Switching Functionality
 function initializeTabs() {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
+    
+    console.log('Initializing tabs:', tabButtons.length, 'buttons found');
 
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
             const tabId = button.getAttribute('data-tab');
+            console.log('Tab clicked:', tabId);
             
             // Remove active class from all tabs and content
             tabButtons.forEach(btn => btn.classList.remove('active'));
@@ -34,11 +44,17 @@ function initializeTabs() {
             
             // Add active class to clicked tab and corresponding content
             button.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+            const tabContent = document.getElementById(tabId);
+            console.log('Tab content element:', tabContent);
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
             
             appState.currentTab = tabId;
         });
     });
+    
+    console.log('Tabs initialized successfully');
 }
 
 // Save and Load Functionality
@@ -46,8 +62,12 @@ function initializeSaveLoad() {
     const saveBtn = document.getElementById('saveBtn');
     const loadBtn = document.getElementById('loadBtn');
 
-    saveBtn.addEventListener('click', saveSession);
-    loadBtn.addEventListener('click', loadSession);
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveSession);
+    }
+    if (loadBtn) {
+        loadBtn.addEventListener('click', loadSession);
+    }
 }
 
 function saveSession() {

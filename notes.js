@@ -4,21 +4,73 @@
 // Initialize Notes functionality
 function initializeNotes() {
     const addNoteBtn = document.getElementById('addNoteBtn');
-    addNoteBtn.addEventListener('click', addNote);
+    const saveNoteBtn = document.getElementById('saveNoteBtn');
+    const cancelNoteBtn = document.getElementById('cancelNoteBtn');
+    
+    if (addNoteBtn) {
+        addNoteBtn.addEventListener('click', showNoteForm);
+    }
+    if (saveNoteBtn) {
+        saveNoteBtn.addEventListener('click', saveNewNote);
+    }
+    if (cancelNoteBtn) {
+        cancelNoteBtn.addEventListener('click', hideNoteForm);
+    }
 }
 
-// Add a new note
-function addNote() {
+// Show the note form
+function showNoteForm() {
+    const formContainer = document.getElementById('noteFormContainer');
+    const addNoteBtn = document.getElementById('addNoteBtn');
+    const noteDate = document.getElementById('noteDate');
+    
+    // Set default date to today
+    noteDate.value = new Date().toISOString().split('T')[0];
+    
+    formContainer.style.display = 'block';
+    addNoteBtn.style.display = 'none';
+}
+
+// Hide the note form
+function hideNoteForm() {
+    const formContainer = document.getElementById('noteFormContainer');
+    const addNoteBtn = document.getElementById('addNoteBtn');
+    const titleInput = document.getElementById('noteTitle');
+    const dateInput = document.getElementById('noteDate');
+    const contentInput = document.getElementById('noteContent');
+    
+    // Clear form
+    titleInput.value = '';
+    dateInput.value = '';
+    contentInput.value = '';
+    
+    formContainer.style.display = 'none';
+    addNoteBtn.style.display = 'block';
+}
+
+// Save new note
+function saveNewNote() {
+    const titleInput = document.getElementById('noteTitle');
+    const dateInput = document.getElementById('noteDate');
+    const contentInput = document.getElementById('noteContent');
+    
+    const title = titleInput.value.trim() || 'Untitled Note';
+    const sessionDate = dateInput.value;
+    const content = contentInput.value.trim();
+    
     const note = {
         id: Date.now(),
-        title: prompt('Enter note title:') || 'Untitled Note',
-        content: prompt('Enter note content:') || '',
+        title: title,
+        sessionDate: sessionDate,
+        content: content,
         timestamp: new Date().toLocaleString()
     };
-
-    appState.notes.push(note);
+    
+    // Add to beginning of array so it appears at top
+    appState.notes.unshift(note);
     renderNotes();
-    showNotification(`Note "${note.title}" created!`, 'success');
+    hideNoteForm();
+    showNotification('Note saved!', 'success');
 }
 
 // Render all notes
@@ -35,28 +87,16 @@ function renderNotes() {
         const noteItem = document.createElement('div');
         noteItem.className = 'note-item';
         noteItem.innerHTML = `
-            <h3>${escapeHtml(note.title)}</h3>
-            <div class="note-content">${escapeHtml(note.content)}</div>
+            <h3>${escapeHtml(note.title || 'Untitled Note')}</h3>
+            <div class="note-date"><strong>Session Date:</strong> ${escapeHtml(note.sessionDate || 'N/A')}</div>
+            <div class="note-content">${escapeHtml(note.content || '')}</div>
             <small style="color: #666;">${escapeHtml(note.timestamp)}</small>
             <div class="note-actions">
-                <button class="btn btn-small" onclick="editNote(${note.id})">Edit</button>
                 <button class="btn btn-small" onclick="deleteNote(${note.id})">Delete</button>
             </div>
         `;
         container.appendChild(noteItem);
     });
-}
-
-// Edit an existing note
-function editNote(id) {
-    const note = appState.notes.find(n => n.id === id);
-    if (note) {
-        note.title = prompt('Edit title:', note.title) || note.title;
-        note.content = prompt('Edit content:', note.content) || note.content;
-        note.timestamp = new Date().toLocaleString();
-        renderNotes();
-        showNotification('Note updated!', 'success');
-    }
 }
 
 // Delete a note
@@ -80,9 +120,10 @@ function escapeHtml(text) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         initializeNotes,
-        addNote,
+        showNoteForm,
+        hideNoteForm,
+        saveNewNote,
         renderNotes,
-        editNote,
         deleteNote
     };
 }

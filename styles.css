@@ -305,6 +305,14 @@ header h1 {
     padding: 20px;
 }
 
+.note-form-wrapper {
+    background-color: #1a1a1a;
+    border-left: 4px solid #5a67d8;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
 .notes-controls {
     margin-bottom: 20px;
 }
@@ -330,6 +338,13 @@ header h1 {
 .note-item .note-content {
     color: #ccc;
     margin-bottom: 10px;
+    white-space: pre-wrap;
+}
+
+.note-item .note-date {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
 .note-item .note-actions {
@@ -340,6 +355,62 @@ header h1 {
 .note-item .btn-small {
     padding: 5px 10px;
     font-size: 12px;
+}
+
+/* Note editing form */
+.note-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.note-title-input {
+    width: 100%;
+    padding: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.note-title-input:focus {
+    outline: none;
+    border-color: #5a67d8;
+}
+
+.note-date-input {
+    width: 100%;
+    padding: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.note-date-input:focus {
+    outline: none;
+    border-color: #5a67d8;
+}
+
+.note-content-input {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.note-content-input:focus {
+    outline: none;
+    border-color: #5a67d8;
 }
 
 /* Responsive Design */

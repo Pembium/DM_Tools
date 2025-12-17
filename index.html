@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DM Tools</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎲</text></svg>">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,7 +20,7 @@
         <nav class="tabs">
             <button class="tab-button active" data-tab="world-map">World Map</button>
             <button class="tab-button" data-tab="npc-cards">NPC Cards</button>
-            <button class="tab-button" data-tab="notes">Notes</button>
+            <button class="tab-button" data-tab="notes">Session Notes</button>
         </nav>
 
         <main class="content">
@@ -53,8 +54,19 @@
 
             <!-- Notes Tab -->
             <div id="notes" class="tab-content">
-                <h2>Notes</h2>
+                <h2>Session Notes</h2>
                 <div class="notes-container">
+                    <div id="noteFormContainer" class="note-form-wrapper" style="display: none;">
+                        <div class="note-edit-form">
+                            <input type="text" id="noteTitle" class="note-title-input" placeholder="Note Title">
+                            <input type="date" id="noteDate" class="note-date-input">
+                            <textarea id="noteContent" class="note-content-input" placeholder="Note content..."></textarea>
+                            <div class="note-actions">
+                                <button id="saveNoteBtn" class="btn btn-primary btn-small">Save Note</button>
+                                <button id="cancelNoteBtn" class="btn btn-small">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="notes-controls">
                         <button id="addNoteBtn" class="btn btn-primary">Add New Note</button>
                     </div>
@@ -66,11 +78,11 @@
         </main>
     </div>
 
-    <!-- Core application script -->
-    <script src="script.js"></script>
-    <!-- Module scripts for each tab -->
+    <!-- Module scripts for each tab (load first) -->
     <script src="world-map.js"></script>
     <script src="npc-cards.js"></script>
     <script src="notes.js"></script>
+    <!-- Core application script (load last to call initialization) -->
+    <script src="script.js"></script>
 </body>
 </html>

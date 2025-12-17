@@ -8,27 +8,29 @@ function initializeWorldMap() {
     const mapPlaceholder = document.getElementById('mapPlaceholder');
 
     // Handle map upload
-    mapUpload.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            
-            reader.onload = (event) => {
-                const imageData = event.target.result;
-                appState.mapData.imageUrl = imageData;
-                displayMap(imageData);
-                showNotification('Map uploaded successfully!', 'success');
-            };
-            
-            reader.onerror = () => {
-                showNotification('Error uploading map', 'error');
-            };
-            
-            reader.readAsDataURL(file);
-        } else {
-            showNotification('Please select a valid image file', 'error');
-        }
-    });
+    if (mapUpload) {
+        mapUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = (event) => {
+                    const imageData = event.target.result;
+                    appState.mapData.imageUrl = imageData;
+                    displayMap(imageData);
+                    showNotification('Map uploaded successfully!', 'success');
+                };
+                
+                reader.onerror = () => {
+                    showNotification('Error uploading map', 'error');
+                };
+                
+                reader.readAsDataURL(file);
+            } else {
+                showNotification('Please select a valid image file', 'error');
+            }
+        });
+    }
 
     // Load existing map if available
     if (appState.mapData.imageUrl) {

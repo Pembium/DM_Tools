@@ -4,27 +4,31 @@
 // Initialize NPC Cards functionality
 function initializeNPCCards() {
     const addNpcBtn = document.getElementById('addNpcBtn');
-    addNpcBtn.addEventListener('click', addNPC);
+    if (addNpcBtn) {
+        addNpcBtn.addEventListener('click', addNPC);
+    }
     
     // Event delegation for dynamically created buttons
     const container = document.getElementById('npcCardsContainer');
-    container.addEventListener('click', (e) => {
-        const target = e.target;
-        
-        if (target.classList.contains('save-npc-btn')) {
-            const id = parseInt(target.dataset.id);
-            saveNPC(id);
-        } else if (target.classList.contains('edit-npc-btn')) {
-            const id = parseInt(target.dataset.id);
-            editNPC(id);
-        } else if (target.classList.contains('delete-npc-btn')) {
-            const id = parseInt(target.dataset.id);
-            deleteNPC(id);
-        } else if (target.classList.contains('toggle-status-btn')) {
-            const id = parseInt(target.dataset.id);
-            toggleStatus(id);
-        }
-    });
+    if (container) {
+        container.addEventListener('click', (e) => {
+            const target = e.target;
+            
+            if (target.classList.contains('save-npc-btn')) {
+                const id = parseInt(target.dataset.id);
+                saveNPC(id);
+            } else if (target.classList.contains('edit-npc-btn')) {
+                const id = parseInt(target.dataset.id);
+                editNPC(id);
+            } else if (target.classList.contains('delete-npc-btn')) {
+                const id = parseInt(target.dataset.id);
+                deleteNPC(id);
+            } else if (target.classList.contains('toggle-status-btn')) {
+                const id = parseInt(target.dataset.id);
+                toggleStatus(id);
+            }
+        });
+    }
 }
 
 // Add a new NPC
